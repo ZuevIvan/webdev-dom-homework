@@ -7,12 +7,12 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-        <li class="comment">
+      <ul id= "comments" class="comments">
+        <li id= "comment" class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
-          </div>
+          </div>    
           <div class="comment-body">
             <div class="comment-text">
               Это будет первый комментарий на этой странице
@@ -44,26 +44,88 @@
         </li>
       </ul>
       <div class="add-form">
-        <input
+        <input id= "name-input"
           type="text"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
-        <textarea
+        <textarea id = "text-input"
           type="textarea"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button id ="add-button" class="add-form-button">Написать</button>
         </div>
       </div>
     </div>
   </body>
 
+  <style>
+    .error {
+      background-color: rgba(255, 0, 0, 0.447);
+    }
+  </style>
+
   <script>
-    // Код писать здесь
+    const buttonElement = document.getElementById("add-button");
+    const commentsElement = document.getElementById("comments");
+    const commentElement = document.getElementById("comment");
+    const nameInputElement = document.getElementById("name-input");
+    const textInputElement = document.getElementById("text-input");
+
+
+    buttonElement.addEventListener("click", () => {
+      
+      nameInputElement.classList.remove("error");
+      textInputElement.classList.remove("error");
+
+
+      // 6. Читаем значение аттрибутов html элементов
+      if (nameInputElement.value === "") {
+        nameInputElement.classList.add("error");
+        return;
+      }
+
+      if (textInputElement.value === "") {
+        textInputElement.classList.add("error");
+        return;
+      }
+
+      let myDate = new Date("7/04/2023");
+       
+
+      // 5. Управление внутренним html содержимым
+      const oldCommentsHtml = commentsElement.innerHTML;
+      commentsElement.innerHTML = oldCommentsHtml +
+      `<li id= "comment" class="comment">
+          <div class="comment-header">
+            <div>${nameInputElement.value}</div>
+            <div>${new Date}</div>
+          </div>    
+          <div class="comment-body">
+            <div class="comment-text">
+              ${textInputElement.value}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>`
+
+      nameInputElement.value = "";
+      textInputElement.value = "";
+
+
+    });
+
+
+
+
     console.log("It works!");
   </script>
 </html>
