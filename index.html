@@ -8,7 +8,7 @@
   <body>
     <div class="container">
       <ul id= "comments" class="comments">
-        <li id= "comment" class="comment">
+        <!-- <li id= "comment" class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -41,7 +41,7 @@
               <button class="like-button -active-like"></button>
             </div>
           </div>
-        </li>
+        </li> -->
       </ul>
       <div class="add-form">
         <input id= "name-input"
@@ -75,6 +75,17 @@
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
 
+    function getDate(){
+      const dateNow = new Date();
+      const dateNumber =dateNow.getDate()
+      const dateMonth =dateNow.getMonth() + 1
+      const dateYear =dateNow.getFullYear()
+      const dateHours = dateNow.getHours()
+      const dateMinutes = dateNow.getMinutes()
+
+      return dateNumber + "." + dateMonth +"."+ dateYear + " "+ dateHours +":"+dateMinutes;
+    }
+
 
     buttonElement.addEventListener("click", () => {
       
@@ -93,8 +104,8 @@
         return;
       }
 
-      let myDate = new Date("7/04/2023");
-       
+    
+    
 
       // 5. Управление внутренним html содержимым
       const oldCommentsHtml = commentsElement.innerHTML;
@@ -102,7 +113,7 @@
       `<li id= "comment" class="comment">
           <div class="comment-header">
             <div>${nameInputElement.value}</div>
-            <div>${new Date}</div>
+            <div>${getDate()}</div>
           </div>    
           <div class="comment-body">
             <div class="comment-text">
@@ -123,9 +134,62 @@
 
     });
 
+    const likesEl = document.querySelectorAll('.like-button');
+
+    for (let likeEL of likesEl ) {
+      likeEL.addEventListener('click', () => {
+        console.log(1);
+      })
+    }
+
+    const comments = [
+      {
+        name: 'Глеб Фокин',
+        comment: 'Это будет первый комментарий на этой странице',
+        date: '12.02.22 12:18',
+        likes: 3,
+        isLiked: false
+      },
+      {
+        name: 'Варвара Н.',
+        comment: 'Мне нравится как оформлена эта страница! ❤',
+        date: '13.02.22 19:22',
+        likes: 75,
+        isLiked: true
+      }
+  ]
+
+  const renderComments = () =>{
+    const commentsHTML = comments
+    .map(comment => {
+      return
+      `<li id= "comment" class="comment">
+          <div class="comment-header">
+            <div>${comment.name}</div>
+            <div>${comment.date}</div>
+          </div>    
+          <div class="comment-body">
+            <div class="comment-text">
+              ${comment.comment}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class=${comment.likes}>0</span>
+              <button class=${comment.isLiked}></button>
+            </div>
+          </div>
+        </li>`;
+    }).join("");
+
+    const commentsEl = document.getElementById("comments");
+    
+    commentsEl.innerHTML = commentsHTML;
+
+    
+  }
 
 
 
-    console.log("It works!");
   </script>
 </html>
