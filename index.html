@@ -192,43 +192,20 @@
       for (let userLike of usersLikes ) {
         userLike.addEventListener('click',() => {
           const indexUserLike = userLike.dataset.index;
-          const indexNumberLikesEl = numberLikesEl.dataset.index;
-          const indexLikesPainter = likesPainter.dataset.index;
+        
 
-          if (comments[index].isLiked === '') {
-            comments[index].likes += 1;
-            comments[index].isLiked = '-active-like';
+          if (comments[indexUserLike].isLiked === '') {
+            comments[indexUserLike].likes += 1;
+            comments[indexUserLike].isLiked = '-active-like';
           } else{
-            comments[index].likes -= 1;
-            comments[index].isLiked = '';
+            comments[indexUserLike].likes -= 1;
+            comments[indexUserLike].isLiked = '';
           }
          renderComments();
 
         })
       }
 
-
-
-      // for (let userLike of usersLikes ) {
-      //   userLike.addEventListener('click', () => {
-      //     console.log('userLike');
-      //       for(let likePainter of likesPainter ){
-      //         likePainter.addEventListener('click', () =>{
-      //           const index = likePainter.dataset.index;
-      //           comments[index].isLiked = '-active-like';
-      //          renderComments();
-                
-      //         })
-      //       }
-      //       for (let likeEl of numberLikesEl  ) {
-      //         likeEl.addEventListener('click', () => {
-      //           const index = likeEl.dataset.index;
-      //           comments[index].likes += 1;
-      //          renderComments();
-      //         })
-      //       }
-      //   })
-      // }
 
 
       
