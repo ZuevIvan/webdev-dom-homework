@@ -126,8 +126,12 @@
       //   oldComments.innerHTML = oldComments.innerHTML + liHTML;
      
       comments.push({
-        name: nameInputElement.value,
-        comment: textInputElement.value,
+        name: nameInputElement.value
+        .replaceAll("<", "&lt;")
+        .replaceAll("<", "&lt;"),
+        comment: textInputElement.value
+        .replaceAll("<", "&lt;")
+        .replaceAll("<", "&lt;"),
         date: getDate(),
         likes: 0,
         isLiked: false
@@ -161,11 +165,11 @@
      .map((comment, index) => {
        return `<li id= "comment" class="comment">
            <div class="comment-header">
-             <div>${comment.name}</div>
+             <div class= "comment-name" data-name="${comment.name}">${comment.name}</div>
              <div>${comment.date}</div>
             </div>    
             <div class="comment-body">
-              <div class="comment-text">
+              <div class="comment-text" data-text="${comment.text}">
                 ${comment.comment}
               </div>
             </div>
@@ -206,11 +210,33 @@
         })
       }
 
+      const responseUserName = document.querySelectorAll('.comment-name');
+        for (const userName of responseUserName){
+          userName.addEventListener('click', () => {
+           const name = userName.dataset.name;
+           textInputElement.value += `${name}`;
 
+           textInputElement.focus()
+
+           })
+        }
+
+        const responseUserText = document.querySelectorAll('.comment-text');
+        for (const userText of responseUserText){
+          userText.addEventListener('click', () => {
+           const text = userText.dataset.text;
+           textInputElement.value += `${text}`;
+
+           textInputElement.focus()
+
+           })
+        }
 
       
 
     }
+
+
 
 
     renderComments();
