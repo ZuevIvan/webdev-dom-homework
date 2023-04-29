@@ -56,6 +56,7 @@
           rows="4"
         ></textarea>
         <div class="add-form-row">
+          <button onclick="removeLastElement()"class="delete-button">Удалить последний комментарий</button>
           <button id ="add-button" class="add-form-button">Написать</button>
         </div>
       </div>
@@ -103,28 +104,7 @@
         textInputElement.classList.add("error");
         return;
       }
-    
-      // const oldComments = document.getElementById("comments");
-      //     const liHTML = `<li id= "comment" class="comment">
-      //       <div class="comment-header">
-      //         <div>${nameInputElement.value}</div>
-      //         <div>${getDate()}</div>
-      //       </div>    
-      //       <div class="comment-body">
-      //           <div class="comment-text">
-      //             ${textInputElement.value}
-      //         </div>
-      //       </div>
-      //       <div class="comment-footer">
-      //           <div class="likes">
-      //             <span class="likes-counter">0</span>
-      //             <button class="like-button"></button>
-      //           </div>
-      //         </div>
-      //     </li>`
 
-      //   oldComments.innerHTML = oldComments.innerHTML + liHTML;
-     
       comments.push({
         name: nameInputElement.value
         .replaceAll("<", "&lt;")
@@ -140,6 +120,10 @@
       renderComments();
 
     }
+    function removeLastElement() {
+      comments.pop(); // удаляем последний элемент из массива comments
+      renderComments(); // перерисовываем список комментариев
+      }
 
     buttonElement.addEventListener("click", addNewElToList);
 
@@ -169,7 +153,7 @@
              <div>${comment.date}</div>
             </div>    
             <div class="comment-body">
-              <div class="comment-text" data-text="${comment.text}">
+              <div class="comment-text" data-text="${comment.comment}">
                 ${comment.comment}
               </div>
             </div>
@@ -184,7 +168,7 @@
       }).join("");
 
     
-    const commentsEl = document.getElementById("comments");
+      const commentsEl = document.getElementById("comments");
     
      commentsEl.innerHTML = commentsHTML;
 
@@ -210,6 +194,8 @@
         })
       }
 
+
+        // доделать ответ на коммент 
       const responseUserName = document.querySelectorAll('.comment-name');
         for (const userName of responseUserName){
           userName.addEventListener('click', () => {
@@ -221,11 +207,12 @@
            })
         }
 
-        const responseUserText = document.querySelectorAll('.comment-text');
+      const responseUserText = document.querySelectorAll('.comment-text');
         for (const userText of responseUserText){
           userText.addEventListener('click', () => {
            const text = userText.dataset.text;
-           textInputElement.value += `${text}`;
+           console.log(userText.dataset.text);
+           textInputElement.value += '>'+ "  " + `${text}` + '\n' +'('+ `${name}`+')' + '\n';
 
            textInputElement.focus()
 
