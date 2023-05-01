@@ -81,12 +81,12 @@
         method: "GET",
     });
 
+
     fetchPromise.then((response) => {
         const jsonPromise = response.json();
         jsonPromise.then((responseData) =>{
-            console.log(responseData);
             commentsServer = responseData.comment
-            renderComments();
+            renderComments(comments);
         })
     })
 
@@ -138,18 +138,17 @@
       name: nameInputElement.value,
       text: textInputElement.value
      }),
-    }); 
+    });
 
+    
     fetchPromise.then((response) => {
       const jsonPromise = response.json();
       jsonPromise.then((responseData) =>{
-        console.log(responseData);
-        commentsServer = responseData.comments
-        renderComments();
+        renderComments(responseData.comments);
       })
     });
 
-      renderComments();
+      renderComments(comments);
 
       // очищаем поля ввода и восстанавливаем placeholder
       nameInputElement.value = "";
@@ -162,7 +161,7 @@
     // удаление послденего коммента
     function removeLastElement() {
       comments.pop(); // удаляем последний элемент из массива comments
-      renderComments(); // перерисовываем список комментариев
+      renderComments(comments); // перерисовываем список комментариев
       }
     buttonElement.addEventListener("click", addNewElToList);
 
@@ -185,7 +184,7 @@
     ]
 
     // рендер
-    const renderComments = () =>{
+    const renderComments = (comments) =>{
       const commentsHTML = comments
      .map((comment, index) => {
        return `<li id= "comment" class="comment" data-index="${index}">
@@ -231,7 +230,7 @@
             comments[indexUserLike].likes -= 1;
             comments[indexUserLike].isLiked = '';
           }
-         renderComments();
+         renderComments(comments);
 
         })
       }
@@ -248,7 +247,7 @@
 
     }
  
-    renderComments();
+    renderComments(comments);
 
   </script>
   </script>
