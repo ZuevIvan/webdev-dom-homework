@@ -76,6 +76,7 @@
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
 
+    // опрделение даты
     function getDate(){
       const dateNow = new Date();
       const dateNumber =dateNow.getDate()
@@ -87,7 +88,7 @@
       return dateNumber + "." + dateMonth +"."+ dateYear + " "+ dateHours +":"+dateMinutes;
     }
 
-      
+    // добавление нового коммента
     const addNewElToList = () =>{
       
       nameInputElement.classList.remove("error");
@@ -120,13 +121,15 @@
       renderComments();
 
     }
+    
+    // удаление послденего коммента
     function removeLastElement() {
       comments.pop(); // удаляем последний элемент из массива comments
       renderComments(); // перерисовываем список комментариев
       }
-
     buttonElement.addEventListener("click", addNewElToList);
 
+    // массив комментов
     const comments = [
       {
         name: 'Глеб Фокин',
@@ -144,10 +147,11 @@
       }
     ]
 
+    // рендер
     const renderComments = () =>{
       const commentsHTML = comments
      .map((comment, index) => {
-       return `<li id= "comment" class="comment">
+       return `<li id= "comment" class="comment" data-index="${index}">
            <div class="comment-header">
              <div class= "comment-name" data-name="${comment.name}">${comment.name}</div>
              <div>${comment.date}</div>
@@ -177,6 +181,7 @@
       const numberLikesEl = document.querySelectorAll('.likes-counter');
       const likesPainter = document.querySelectorAll('.like-button')
 
+      // обработчик лайков
       for (let userLike of usersLikes ) {
         userLike.addEventListener('click',() => {
           const indexUserLike = userLike.dataset.index;
@@ -194,38 +199,18 @@
         })
       }
 
-
-        // доделать ответ на коммент 
-      const responseUserName = document.querySelectorAll('.comment-name');
-        for (const userName of responseUserName){
-          userName.addEventListener('click', () => {
-           const name = userName.dataset.name;
-           textInputElement.value += `${name}`;
-
-           textInputElement.focus()
-
-           })
-        }
-
-      const responseUserText = document.querySelectorAll('.comment-text');
-        for (const userText of responseUserText){
-          userText.addEventListener('click', () => {
-           const text = userText.dataset.text;
-           console.log(userText.dataset.text);
-           textInputElement.value += '>'+ "  " + `${text}` + '\n' +'('+ `${name}`+')' + '\n';
-
-           textInputElement.focus()
-
-           })
-        }
-
-      
-
     }
 
-
-
-
+    const responseUsersComments = document.querySelectorAll('.comment');
+    for(const responseUserComment of responseUsersComments ){
+      responseUserComment.addEventListener('click',() => {
+        const userName = comments[comment.dataset.index].name;
+        const userText = comments[comment.dataset.index].comment;
+        textInputElement.value = '>'+ "  " + `${userText}` + '\n' +'('+ `${userName}`+')' + '\n'; 
+      })
+    }
+    
+    
     renderComments();
 
 
