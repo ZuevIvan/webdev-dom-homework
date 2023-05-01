@@ -183,10 +183,10 @@
 
       // обработчик лайков
       for (let userLike of usersLikes ) {
-        userLike.addEventListener('click',() => {
+        userLike.addEventListener('click',(event) => {
+          event.stopPropagation();
           const indexUserLike = userLike.dataset.index;
         
-
           if (comments[indexUserLike].isLiked === '') {
             comments[indexUserLike].likes += 1;
             comments[indexUserLike].isLiked = '-active-like';
@@ -198,17 +198,20 @@
 
         })
       }
+      
+      // ответ на комментарий
+      const responseUsersComments = document.querySelectorAll('.comment');
+      for(const responseUserComment of responseUsersComments ){
+        responseUserComment.addEventListener('click',() => {
+          const userName = comments[responseUserComment.dataset.index].name;
+          const userText = comments[responseUserComment.dataset.index].comment;
+          textInputElement.value = '>'+ "  " + `${userText}` + '\n' +'('+ `${userName}`+')' + '\n'; 
+        })
+      }
 
     }
 
-    const responseUsersComments = document.querySelectorAll('.comment');
-    for(const responseUserComment of responseUsersComments ){
-      responseUserComment.addEventListener('click',() => {
-        const userName = comments[comment.dataset.index].name;
-        const userText = comments[comment.dataset.index].comment;
-        textInputElement.value = '>'+ "  " + `${userText}` + '\n' +'('+ `${userName}`+')' + '\n'; 
-      })
-    }
+    
     
     
     renderComments();
