@@ -4,6 +4,15 @@
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
 
+   const result = fetch(
+        'https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments',
+        {
+            method: "GET"
+        }
+    )
+
+    console.log(result);
+
     // опрделение даты
     function getDate(){
       const dateNow = new Date();
