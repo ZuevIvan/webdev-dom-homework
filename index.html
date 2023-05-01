@@ -120,6 +120,12 @@
 
       renderComments();
 
+      // очищаем поля ввода и восстанавливаем placeholder
+      nameInputElement.value = "";
+      textInputElement.value = "";
+      nameInputElement.blur();
+      textInputElement.blur();
+
     }
     
     // удаление послденего коммента
@@ -211,19 +217,8 @@
 
     }
 
-    
-    
-    
     renderComments();
 
-
-
-
-
-    
-
-
- 
 
   </script>
 </html>
