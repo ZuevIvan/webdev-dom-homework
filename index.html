@@ -8,40 +8,7 @@
   <body>
     <div class="container">
       <ul id= "comments" class="comments">
-        <!-- <li id= "comment" class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>    
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li> -->
+        <!-- происходит рендер -->
       </ul>
       <div class="add-form">
         <input id= "name-input"
@@ -76,20 +43,23 @@
     const commentElement = document.getElementById("comment");
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
+    let commentsServer = [];
 
-   const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments',{
-        method: "GET",
+    function getComments() {
+  const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments', {
+    method: "GET",
+  });
+
+  fetchPromise.then((response) => {
+    const jsonPromise = response.json();
+    jsonPromise.then((responseData) => {
+      commentsServer = responseData.comments;
+      renderComments(commentsServer); // Re-render the comments list after loading the page
     });
+  });
+}
 
-
-    fetchPromise.then((response) => {
-      const jsonPromise = response.json();
-      jsonPromise.then((responseData) =>{
-        commentsServer = responseData.comment;
-        renderComments(commentsServer);
-      });
-    });
-
+    getComments(); // вызываем функцию для получения комментариев при загрузке страницы
 
     // опрделение даты
     function getDate(){
@@ -104,7 +74,7 @@
     }
 
     // добавление нового коммента
-    const addNewElToList = () =>{
+    const addNewElToList = (commentsServer) =>{
       
       nameInputElement.classList.remove("error");
       textInputElement.classList.remove("error");
@@ -134,39 +104,53 @@
       // })
 
     
-      const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments',{
-       method: "POST",
+      // отправляем POST-запрос на сервер для добавления нового комментария
+      const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments', {
+        method: "POST",
         body: JSON.stringify({
           name: nameInputElement.value,
           text: textInputElement.value
         }),
       });
 
-  fetchPromise.then((response) => {
-      const jsonPromise = response.json();
-      jsonPromise.then((responseData) =>{
-        if (responseData.result === "ok") {
-          renderComments(commentsServer);
-        }
+      fetchPromise.then((response) => {
+        const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+          if (responseData.result === "ok") {
+            commentsServer.push({
+              name: responseData.name,
+              comment: responseData.text,
+              date: responseData.date,
+              likes: 0,
+              isLiked: false
+            });
+            renderComments(commentsServer);
+          } 
+        })
       });
-  });
+      
 
-  renderComments(commentsServer);
+
 
       // очищаем поля ввода и восстанавливаем placeholder
       nameInputElement.value = "";
       textInputElement.value = "";
-      nameInputElement.blur();
-      textInputElement.blur();
+      nameInputElement.placeholder = "Введите ваше имя";
+      textInputElement.placeholder = "Введите ваш комментарий";
 
     }
-    
+  
+    buttonElement.addEventListener("click",() => {
+      addNewElToList(commentsServer);
+      
+    });
+
     // удаление послденего коммента
     function removeLastElement() {
       comments.pop(); // удаляем последний элемент из массива comments
       renderComments(commentsServer); // перерисовываем список комментариев
-      }
-    buttonElement.addEventListener("click", addNewElToList);
+    }
+    
 
     // массив комментов
     const comments = [
@@ -189,7 +173,7 @@
     // рендер
     const renderComments = (commentsServer) =>{
       const commentsHTML = comments
-     .map((comment, index) => {
+      .map((comment, index) => {
        return `<li id= "comment" class="comment" data-index="${index}">
            <div class="comment-header">
              <div class= "comment-name" data-name="${comment.name}">${comment.name}</div>
@@ -213,7 +197,7 @@
     
       const commentsEl = document.getElementById("comments");
     
-     commentsEl.innerHTML = commentsHTML;
+      commentsEl.innerHTML = commentsHTML;
 
 
       const usersLikes = document.querySelectorAll('.likes');
@@ -227,13 +211,13 @@
           const indexUserLike = userLike.dataset.index;
         
           if (comments[indexUserLike].isLiked === '') {
-            comments[indexUserLike].likes += 1;
-            comments[indexUserLike].isLiked = '-active-like';
+              comments[indexUserLike].likes += 1;
+              comments[indexUserLike].isLiked = '-active-like';
           } else{
-            comments[indexUserLike].likes -= 1;
-            comments[indexUserLike].isLiked = '';
-          }
-         renderComments(commentsServer);
+              comments[indexUserLike].likes -= 1;
+              comments[indexUserLike].isLiked = '';
+            }
+          renderComments(commentsServer);
 
         })
       }
@@ -252,6 +236,5 @@
  
     renderComments(commentsServer);
 
-  </script>
   </script>
 </html>
