@@ -116,9 +116,7 @@
       fetchPromise.then((response) => {
         const jsonPromise = response.json();
         jsonPromise.then((responseData) => {
-          if (responseData.result === "ok") {
-            getComments();
-          };
+          getComments();
           renderComments(commentsServer);
         })
       })
@@ -165,7 +163,7 @@
 
     // рендер
     const renderComments = (commentsServer) =>{
-      const commentsHTML = comments
+      const commentsHTML = commentsServer
       .map((comment, index) => {
        return `<li id= "comment" class="comment" data-index="${index}">
            <div class="comment-header">
