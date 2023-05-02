@@ -83,12 +83,13 @@
 
 
     fetchPromise.then((response) => {
-        const jsonPromise = response.json();
-        jsonPromise.then((responseData) =>{
-            commentsServer = responseData.comment
-            renderComments(comments);
-        })
-    })
+      const jsonPromise = response.json();
+      jsonPromise.then((responseData) =>{
+        commentsServer = responseData.comment;
+        renderComments(commentsServer);
+      });
+    });
+
 
     // опрделение даты
     function getDate(){
@@ -132,23 +133,25 @@
       //   isLiked: false
       // })
 
-    const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments',{
-     method: "POST",
-     body: JSON.stringify({
-      name: nameInputElement.value,
-      text: textInputElement.value
-     }),
-    });
-
     
-    fetchPromise.then((response) => {
+      const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments',{
+       method: "POST",
+        body: JSON.stringify({
+          name: nameInputElement.value,
+          text: textInputElement.value
+        }),
+      });
+
+  fetchPromise.then((response) => {
       const jsonPromise = response.json();
       jsonPromise.then((responseData) =>{
-        renderComments(responseData.comments);
-      })
-    });
+        if (responseData.result === "ok") {
+          renderComments(commentsServer);
+        }
+      });
+  });
 
-      renderComments(comments);
+  renderComments(commentsServer);
 
       // очищаем поля ввода и восстанавливаем placeholder
       nameInputElement.value = "";
@@ -161,7 +164,7 @@
     // удаление послденего коммента
     function removeLastElement() {
       comments.pop(); // удаляем последний элемент из массива comments
-      renderComments(comments); // перерисовываем список комментариев
+      renderComments(commentsServer); // перерисовываем список комментариев
       }
     buttonElement.addEventListener("click", addNewElToList);
 
@@ -184,7 +187,7 @@
     ]
 
     // рендер
-    const renderComments = (comments) =>{
+    const renderComments = (commentsServer) =>{
       const commentsHTML = comments
      .map((comment, index) => {
        return `<li id= "comment" class="comment" data-index="${index}">
@@ -230,7 +233,7 @@
             comments[indexUserLike].likes -= 1;
             comments[indexUserLike].isLiked = '';
           }
-         renderComments(comments);
+         renderComments(commentsServer);
 
         })
       }
@@ -241,13 +244,13 @@
         responseUserComment.addEventListener('click',() => {
           const userName = comments[responseUserComment.dataset.index].name;
           const userText = comments[responseUserComment.dataset.index].comment;
-          textInputElement.value = '>'+ "  " + `${userText}` + '\n' +'('+ `${userName}`+')' + '\n'; 
+          textInputElement.value = '>'+ "  " + ' "' + `${userText}`  + ' "' + ' ©' + '\n' +'('+ `${userName}`+')' + '\n'; 
         })
       }
 
     }
  
-    renderComments(comments);
+    renderComments(commentsServer);
 
   </script>
   </script>
