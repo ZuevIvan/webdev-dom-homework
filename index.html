@@ -117,17 +117,11 @@
         const jsonPromise = response.json();
         jsonPromise.then((responseData) => {
           if (responseData.result === "ok") {
-            commentsServer.push({
-              name: responseData.name,
-              comment: responseData.text,
-              date: responseData.date,
-              likes: 0,
-              isLiked: false
-            });
-            renderComments(commentsServer);
-          } 
+            getComments();
+          };
+          renderComments(commentsServer);
         })
-      });
+      })
       
 
 
