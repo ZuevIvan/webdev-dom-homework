@@ -100,11 +100,12 @@
       //   .replaceAll("<", "&lt;"),
       //   date: getDate(),
       //   likes: 0,
-      //   isLiked: false
+      //   isLiked: "",
       // })
 
     
       // отправляем POST-запрос на сервер для добавления нового комментария
+     
       const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments', {
         method: "POST",
         body: JSON.stringify({
@@ -118,8 +119,9 @@
         jsonPromise.then((responseData) => {
           getComments();
           renderComments(commentsServer);
-        })
-      })
+          console.log(commentsServer);
+        });
+      });
       
 
 
@@ -167,12 +169,12 @@
       .map((comment, index) => {
        return `<li id= "comment" class="comment" data-index="${index}">
            <div class="comment-header">
-             <div class= "comment-name" data-name="${comment.name}">${comment.name}</div>
-             <div>${comment.date}</div>
+             <div class= "comment-name" data-name="${comment.author.name}">${comment.author.name}</div>
+             <div>${getDate(comment.date)}</div>
             </div>    
             <div class="comment-body">
-              <div class="comment-text" data-text="${comment.comment}">
-                ${comment.comment}
+              <div class="comment-text" data-text="${comment.text}">
+                ${comment.text}
               </div>
             </div>
             <div class="comment-footer">
