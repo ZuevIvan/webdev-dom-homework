@@ -120,9 +120,12 @@
         jsonPromise.then((responseData) => {
           getComments();
           renderComments(commentsServer);
+          
+        })
+        .then (() =>{
           buttonElement.disabled = false;
           buttonElement.textContent = 'Написать';
-        });
+        })
       });
       
 
