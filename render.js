@@ -1,9 +1,5 @@
 import { getComments, addNewElToList } from './api.js';
 
-const buttonElement = document.getElementById("add-button");
-const commentsElement = document.getElementById("comments");
-const nameInputElement = document.getElementById("name-input");
-const textInputElement = document.getElementById("text-input");
 
 // опрделение даты
 function getDate(){
@@ -19,6 +15,13 @@ function getDate(){
 
 // добавление нового коммента
 function addNewComment() {
+
+    const buttonElement = document.getElementById("add-button");
+    const commentsElement = document.getElementById("comments");
+    const nameInputElement = document.getElementById("name-input");
+    const textInputElement = document.getElementById("text-input");
+
+
   nameInputElement.classList.remove("error");
   textInputElement.classList.remove("error");
 
