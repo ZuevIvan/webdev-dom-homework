@@ -18,9 +18,10 @@ function addNewComment() {
 
     const buttonElement = document.getElementById("add-button");
     const commentsElement = document.getElementById("comments");
+    const commentElement = document.getElementById("comment");
     const nameInputElement = document.getElementById("name-input");
     const textInputElement = document.getElementById("text-input");
-
+    let commentsServer = [];
 
   nameInputElement.classList.remove("error");
   textInputElement.classList.remove("error");
