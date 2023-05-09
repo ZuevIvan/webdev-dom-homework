@@ -46,18 +46,18 @@
     let commentsServer = [];
 
     function getComments() {
-  const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments', {
-    method: "GET",
-  });
+      const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments', {
+        method: "GET",
+      });
 
-  fetchPromise.then((response) => {
-    const jsonPromise = response.json();
-    jsonPromise.then((responseData) => {
-      commentsServer = responseData.comments;
-      renderComments(commentsServer); // Re-render the comments list after loading the page
-    });
-  });
-}
+      fetchPromise.then((response) => {
+        const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+          commentsServer = responseData.comments;
+          renderComments(commentsServer); // Re-render the comments list after loading the page
+        });
+      });
+    }
 
     getComments(); // вызываем функцию для получения комментариев при загрузке страницы
 
@@ -105,31 +105,46 @@
 
     
       // отправляем POST-запрос на сервер для добавления нового комментария
-     
+      buttonElement.disabled = true;
+      buttonElement.textContent = 'Комментарий добавляется, подождите...';
       const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/v1/ivan-zuev/comments', {
         method: "POST",
         body: JSON.stringify({
           name: nameInputElement.value,
           text: textInputElement.value
         }),
-      });
-
-      fetchPromise.then((response) => {
-        const jsonPromise = response.json();
-        jsonPromise.then((responseData) => {
-          getComments();
-          renderComments(commentsServer);
-          console.log(commentsServer);
-        });
+      })
+      .then((response) => {
+        if (response.status === 500 ){
+          return Promise.reject ("Серер упал")
+        } else {
+          return response.json();
+        }
+        if (response.status === 400 ){
+          return Promise.reject ("Объект с ошибкой в формате")
+        } else {
+          return response.json();
+        }
+      })
+      .then((responseData) => {
+        getComments();
+        renderComments(commentsServer);
+      })
+      .then (() =>{
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+        nameInputElement.value = "";
+        textInputElement.value = "";
+        nameInputElement.placeholder = "Введите ваше имя";
+        textInputElement.placeholder = "Введите ваш комментарий";
+      })
+      .catch ((error) => {
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+        alert('Кажется что-то пошло не так, попробуй позже')
       });
       
-
-
-      // очищаем поля ввода и восстанавливаем placeholder
-      nameInputElement.value = "";
-      textInputElement.value = "";
-      nameInputElement.placeholder = "Введите ваше имя";
-      textInputElement.placeholder = "Введите ваш комментарий";
+      renderComments(commentsServer);
 
     }
   
