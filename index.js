@@ -2,7 +2,6 @@
 import { getComments, addNewElToList as apiAddNewElToList } from './api.js';
 import { renderComments, addNewComment as renderAddNewComment } from './render.js';
 
-// getComments(); // вызываем функцию для получения комментариев при загрузке страницы
 
 // определение даты
 import { getDate } from './render.js';

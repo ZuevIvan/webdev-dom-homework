@@ -1,5 +1,13 @@
 
 
+// Вызов функции получения комментариев при загрузке страницы
+getComments().then((comments) => {
+  renderComments(comments);
+}).catch((error) => {
+  console.log('Ошибка при получении комментариев:', error);
+});
+
+
 // Рендеринг комментариев
 export function renderComments(comments) {
   const commentsHTML = comments.map((comment, index) => {
@@ -74,12 +82,6 @@ export function getDate(){
 
 
 
-// Вызов функции получения комментариев при загрузке страницы
-getComments().then((comments) => {
-  renderComments(comments);
-}).catch((error) => {
-  console.log('Ошибка при получении комментариев:', error);
-});
 
 // Добавление нового комментария
 export function addNewComment() {
