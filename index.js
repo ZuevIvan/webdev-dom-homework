@@ -1,50 +1,46 @@
 
+import { getComments, addNewElToList as apiAddNewElToList } from './api.js';
+import { renderComments, addNewComment as renderAddNewComment } from './render.js';
+
+// getComments(); // вызываем функцию для получения комментариев при загрузке страницы
+
+// определение даты
+import { getDate } from './render.js';
 
 
-    import { getComments } from './api.js';
+const buttonElement = document.getElementById("add-button");
 
-    // getComments(); // вызываем функцию для получения комментариев при загрузке страницы
+// добавление нового комментария
+buttonElement.addEventListener("click", () => {
+  addNewComment();
+});
 
-    // опрделение даты
-    import { getDate } from './render.js';
+// удаление последнего комментария
+function removeLastElement() {
+  comments.pop(); // удаляем последний элемент из массива comments
+  renderComments(comments); // перерисовываем список комментариев
+}
+
+// массив комментариев
+const comments = [
+  {
+    name: 'Глеб Фокин',
+    comment: 'Это будет первый комментарий на этой странице',
+    date: '12.02.22 12:18',
+    likes: 3,
+    isLiked: ''
+  },
+  {
+    name: 'Варвара Н.',
+    comment: 'Мне нравится как оформлена эта страница! ❤',
+    date: '13.02.22 19:22',
+    likes: 75,
+    isLiked: '-active-like'
+  }
+];
 
 
-    // добавление нового коммента
-    import { addNewComment } from './render.js';
-
-
-
-    buttonElement.addEventListener("click",() => {
-      addNewElToList(commentsServer);
-      
-    });
-
-    // удаление послденего коммента
-    function removeLastElement() {
-      comments.pop(); // удаляем последний элемент из массива comments
-      renderComments(commentsServer); // перерисовываем список комментариев
-    }
-    
-
-    // массив комментов
-    const comments = [
-      {
-        name: 'Глеб Фокин',
-        comment: 'Это будет первый комментарий на этой странице',
-        date: '12.02.22 12:18',
-        likes: 3,
-        isLiked: ''
-      },
-      {
-        name: 'Варвара Н.',
-        comment: 'Мне нравится как оформлена эта страница! ❤',
-        date: '13.02.22 19:22',
-        likes: 75,
-        isLiked: '-active-like'
-      }
-    ]
-
-    // рендер
+  // рендер
     // const renderComments = (commentsServer) =>{
     //   const commentsHTML = commentsServer
     //   .map((comment, index) => {
