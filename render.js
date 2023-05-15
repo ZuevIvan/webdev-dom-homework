@@ -1,24 +1,16 @@
 
 
-// Вызов функции получения комментариев при загрузке страницы
-getComments().then((comments) => {
-  renderComments(comments);
-}).catch((error) => {
-  console.log('Ошибка при получении комментариев:', error);
-});
-
-
 // Рендеринг комментариев
-export function renderComments(comments) {
-  const commentsHTML = comments.map((comment, index) => {
+export function renderComments(commentsServer) {
+  const commentsHTML = commentsServer.map((comment, index) => {
     return `<li id="comment" class="comment" data-index="${index}">
       <div class="comment-header">
-        <div class="comment-name" data-name="${comment.name}">${comment.name}</div>
-        <div>${getDate()}</div>
+        <div class="comment-name" data-name="${comment.author.name}">${comment.author.name}</div>
+        <div>${getDate(comment.date)}</div>
       </div>
       <div class="comment-body">
-        <div class="comment-text" data-text="${comment.comment}">
-          ${comment.comment}
+        <div class="comment-text" data-text="${comment.text}">
+          ${comment.text}
         </div>
       </div>
       <div class="comment-footer">
@@ -43,24 +35,24 @@ export function renderComments(comments) {
       event.stopPropagation();
       const indexUserLike = userLike.dataset.index;
 
-      if (comments[indexUserLike].isLiked === '') {
-        comments[indexUserLike].likes += 1;
-        comments[indexUserLike].isLiked = '-active-like';
+      if (commentsServer[indexUserLike].isLiked === '') {
+        commentsServer[indexUserLike].likes += 1;
+        commentsServer[indexUserLike].isLiked = '-active-like';
       } else {
-        comments[indexUserLike].likes -= 1;
-        comments[indexUserLike].isLiked = '';
+        commentsServer[indexUserLike].likes -= 1;
+        commentsServer[indexUserLike].isLiked = '';
       }
-
-      renderComments(comments);
+      renderComments(commentsServer);
     });
   }
 
   // Ответ на комментарий
-  const responseUsersComments = document.querySelectorAll('.comment');
+  const responseUsersComments = document.querySelectorAll('#comment');
   for (const responseUserComment of responseUsersComments) {
     responseUserComment.addEventListener('click', () => {
-      const userName = comments[responseUserComment.dataset.index].name;
-      const userText = comments[responseUserComment.dataset.index].comment;
+      const userName = commentsServer[responseUserComment.dataset.index].author.name;
+      const userText = commentsServer[responseUserComment.dataset.index].text;
+      const textInputElement = document.getElementById("text-input");
       textInputElement.value = '>' + "  " + ' "' + `${userText}` + ' "' + ' ©' + '\n' + '(' + `${userName}` + ')' + '\n';
     });
   }
@@ -82,6 +74,12 @@ export function getDate(){
 
 
 
+// Вызов функции получения комментариев при загрузке страницы
+getComments().then((comments) => {
+  renderComments(comments);
+}).catch((error) => {
+  console.log('Ошибка при получении комментариев:', error);
+});
 
 // Добавление нового комментария
 export function addNewComment() {
@@ -105,19 +103,26 @@ export function addNewComment() {
   const text = textInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
   addNewElToList(name, text)
-    .then(() => {
-      nameInputElement.value = "";
-      textInputElement.value = "";
-      nameInputElement.placeholder = "Введите ваше имя";
-      textInputElement.placeholder = "Введите ваш комментарий";
-      return getComments();
-    })
-    .then((comments) => {
-      renderComments(comments);
-    })
-    .catch((error) => {
-      buttonElement.disabled = false;
-      buttonElement.textContent = "Написать";
-      alert("Кажется что-то пошло не так, попробуйте позже");
-    });
+  .then(() => {
+    nameInputElement.value = "";
+    textInputElement.value = "";
+    nameInputElement.placeholder = "Введите ваше имя";
+    textInputElement.placeholder = "Введите ваш комментарий";
+    return getComments();
+  })
+  .then((updatedComments) => {
+    comments = updatedComments; // Обновление массива comments
+    renderComments(comments);
+  })
+  .catch((error) => {
+    buttonElement.disabled = false;
+    buttonElement.textContent = "Написать";
+    alert("Кажется что-то пошло не так, попробуйте позже");
+  });
 }
+
+
+
+
+
+
