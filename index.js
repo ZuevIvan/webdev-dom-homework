@@ -2,50 +2,20 @@
 import { getComments, addNewElToList as apiAddNewElToList } from './api.js';
 import { renderComments, addNewComment as renderAddNewComment } from './render.js';
 
-// Вызов функции получения комментариев при загрузке страницы
-getComments().then((comments) => {
-  renderComments(comments);
-}).catch((error) => {
-  console.log('Ошибка при получении комментариев:', error);
+getComments()
+  .then((comments) => {
+    renderComments(comments);
+  })
+  .catch((error) => {
+    console.log('Ошибка при получении комментариев:', error);
+  });
+
+  document.getElementById("add-button").addEventListener("click", () => {
+  addNewComment();
 });
 
-// определение даты
-import { getDate } from './render.js';
 
-
-const buttonElement = document.getElementById("add-button");
-
-// добавление нового комментария
-buttonElement.addEventListener("click", () => {
-  renderAddNewComment();
-});
-
-// удаление последнего комментария
-function removeLastElement() {
-  comments.pop(); // удаляем последний элемент из массива comments
-  renderComments(comments); // перерисовываем список комментариев
-}
-
-// массив комментариев
-const comments = [
-  {
-    name: 'Глеб Фокин',
-    comment: 'Это будет первый комментарий на этой странице',
-    date: '12.02.22 12:18',
-    likes: 3,
-    isLiked: ''
-  },
-  {
-    name: 'Варвара Н.',
-    comment: 'Мне нравится как оформлена эта страница! ❤',
-    date: '13.02.22 19:22',
-    likes: 75,
-    isLiked: '-active-like'
-  }
-];
-
-
-  // рендер
+// рендер
     // const renderComments = (commentsServer) =>{
     //   const commentsHTML = commentsServer
     //   .map((comment, index) => {
