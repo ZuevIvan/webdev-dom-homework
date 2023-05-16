@@ -111,8 +111,7 @@ export function addNewComment() {
     return getComments();
   })
   .then((updatedComments) => {
-    comments = updatedComments; // Обновление массива comments
-    renderComments(comments);
+    renderComments(updatedComments);
   })
   .catch((error) => {
     buttonElement.disabled = false;

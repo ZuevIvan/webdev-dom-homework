@@ -1,32 +1,29 @@
+import { getComments, addNewElToList } from './api.js';
+import { renderComments, addNewComment } from './render.js';
 
-import { getComments, addNewElToList as apiAddNewElToList } from './api.js';
-import { renderComments, addNewComment as renderAddNewComment } from './render.js';
+let comments;
 
 // Вызов функции получения комментариев при загрузке страницы
-getComments().then((comments) => {
-  renderComments(comments);
-}).catch((error) => {
-  console.log('Ошибка при получении комментариев:', error);
+getComments()
+  .then((commentsData) => {
+    comments = commentsData;
+    renderComments(comments);
+  })
+  .catch((error) => {
+    console.log('Ошибка при получении комментариев:', error);
+  });
+
+const addButtonElement = document.getElementById('add-button');
+
+// Добавление нового комментария
+addButtonElement.addEventListener('click', () => {
+  addNewComment(comments);
 });
 
-// определение даты
-import { getDate } from './render.js';
-
-
-const buttonElement = document.getElementById("add-button");
-
-// добавление нового комментария
-buttonElement.addEventListener("click", () => {
-  renderAddNewComment();
-});
-
-// удаление последнего комментария
+// Удаление последнего комментария
 function removeLastElement() {
   comments.pop(); // удаляем последний элемент из массива comments
   renderComments(comments); // перерисовываем список комментариев
 }
-
-// массив комментариев
-let comments;
 
     
