@@ -91,6 +91,10 @@ export function renderComments(commentsServer) {
     document.addEventListener("DOMContentLoaded", function() {
   const buttonElement = document.getElementById("add-button");
 
+  document.getElementById("add-button").addEventListener("click", () => {
+    addNewComment();
+  });
+
   // добавление нового комментария
   buttonElement.addEventListener("click", () => {
     addNewComment();

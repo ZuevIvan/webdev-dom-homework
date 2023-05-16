@@ -10,9 +10,9 @@ getComments()
     console.log('Ошибка при получении комментариев:', error);
   });
 
-  document.getElementById("add-button").addEventListener("click", () => {
-  addNewComment();
-});
+//   document.getElementById("add-button").addEventListener("click", () => {
+//   addNewComment();
+// });
 
 
 // рендер
