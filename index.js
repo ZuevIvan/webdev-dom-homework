@@ -1,5 +1,5 @@
 import { getComments, addNewElToList } from './api.js';
-import { renderComments, addNewComment } from './render.js';
+import { renderComments, addNewComment, removeLastElement } from './render.js';
 
 let comments;
 
@@ -14,6 +14,7 @@ getComments()
   });
 
 const addButtonElement = document.getElementById('add-button');
+const deleteButtonElement = document.querySelector('.delete-button');
 
 // Добавление нового комментария
 addButtonElement.addEventListener('click', () => {
@@ -21,9 +22,7 @@ addButtonElement.addEventListener('click', () => {
 });
 
 // Удаление последнего комментария
-function removeLastElement() {
-  comments.pop(); // удаляем последний элемент из массива comments
-  renderComments(comments); // перерисовываем список комментариев
-}
-
+deleteButtonElement.addEventListener('click', () => {
+  removeLastElement(comments);
+});
     

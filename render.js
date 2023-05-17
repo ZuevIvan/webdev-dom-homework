@@ -46,7 +46,8 @@ export function renderComments(commentsServer) {
     });
   }
 
-  // Ответ на комментарий
+  // // Ответ на комментарий
+
   const responseUsersComments = document.querySelectorAll('#comment');
   for (const responseUserComment of responseUsersComments) {
     responseUserComment.addEventListener('click', () => {
@@ -60,8 +61,15 @@ export function renderComments(commentsServer) {
 
 import { getComments, addNewElToList } from './api.js';
 
+export function removeLastElement(comments) {
+  if (comments.length > 0) {
+    comments.pop(); // удаляем последний элемент из массива comments
+    renderComments(comments); // перерисовываем список комментариев
+  }
+}
+
 // Определение даты
-export function getDate(){
+export function getDate(date){
   const dateNow = new Date();
   const dateNumber = String(dateNow.getDate()).padStart(2, '0');
   const dateMonth = String(dateNow.getMonth() + 1).padStart(2, '0');
@@ -82,7 +90,7 @@ getComments().then((comments) => {
 });
 
 // Добавление нового комментария
-export function addNewComment() {
+export function addNewComment(comments) {
   const buttonElement = document.getElementById("add-button");
   const nameInputElement = document.getElementById("name-input");
   const textInputElement = document.getElementById("text-input");
