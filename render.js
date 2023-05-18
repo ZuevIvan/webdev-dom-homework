@@ -16,7 +16,7 @@ export function renderComments(commentsServer) {
       <div class="comment-footer">
         <div class="likes" data-index="${index}">
           <span class="likes-counter" data-index="${index}">${comment.likes}</span>
-          <button class="like-button ${comment.isLiked}" data-index="${index}"></button>
+          <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${index}"></button>
         </div>
       </div>
     </li>`;
@@ -30,21 +30,21 @@ export function renderComments(commentsServer) {
   const likesPainter = document.querySelectorAll('.like-button');
 
   // Обработчик лайков
+
   for (let userLike of usersLikes) {
     userLike.addEventListener('click', (event) => {
       event.stopPropagation();
       const indexUserLike = userLike.dataset.index;
-
-      if (commentsServer[indexUserLike].isLiked === '') {
-        commentsServer[indexUserLike].likes += 1;
-        commentsServer[indexUserLike].isLiked = '-active-like';
-      } else {
+      if (commentsServer[indexUserLike].isLiked) {
         commentsServer[indexUserLike].likes -= 1;
-        commentsServer[indexUserLike].isLiked = '';
+        commentsServer[indexUserLike].isLiked = false;
+      } else {
+        commentsServer[indexUserLike].likes += 1;
+        commentsServer[indexUserLike].isLiked = true;
       }
       renderComments(commentsServer);
     });
-  }
+  };
 
   // // Ответ на комментарий
 
