@@ -1,4 +1,5 @@
 
+import { getComments, addNewElToList } from './api.js';
 
 // Рендеринг комментариев
 export function renderComments(commentsServer) {

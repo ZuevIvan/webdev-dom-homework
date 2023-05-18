@@ -1,5 +1,5 @@
-import { getComments, addNewElToList } from './api.js';
-import { renderComments, addNewComment, removeLastElement } from './render.js';
+import { addNewElToList } from './api.js';
+import { renderComments, addNewComment, removeLastElement, getDate } from './render.js';
 
 let comments;
 
@@ -25,4 +25,3 @@ addButtonElement.addEventListener('click', () => {
 deleteButtonElement.addEventListener('click', () => {
   removeLastElement(comments);
 });
-    
