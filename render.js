@@ -82,7 +82,23 @@ export function renderComments(commentsServer, token) {
       textInputElement.value = '>' + "  " + ' "' + `${userText}` + ' "' + ' ©' + '\n' + '(' + `${userName}` + ')' + '\n';
     });
   }
+
+  const addButtonElement = document.getElementById('add-button');
+
+  // Добавление нового комментария
+  addButtonElement.addEventListener('click', () => {
+    addNewComment(comments);
+  });
+  
+  const deleteButtonElement = document.querySelector('.delete-button');
+  
+  // Удаление последнего комментария
+  deleteButtonElement.addEventListener('click', () => {
+    removeLastElement(comments);
+  });
+
 }
+
 
 
 
