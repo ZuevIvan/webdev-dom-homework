@@ -1,5 +1,5 @@
 import { getComments  } from './api.js';
-import { renderComments, addNewComment, removeLastElement,  } from './render.js';
+import { renderComments } from './render.js';
 
 let comments;
 

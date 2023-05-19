@@ -47,7 +47,7 @@ export function renderComments(commentsServer, token) {
     </div>` : "дописать ссылку!!!!!"}
  
     </div>`
-  const appEl = document.getElementById("app");
+  const appEl = document.querySelectorAll("app");
   appEl.innerHTML = appHTML;
 
   const usersLikes = document.querySelectorAll('.likes');

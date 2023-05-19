@@ -1,4 +1,4 @@
-export const host = 'https://webdev-hw-api.vercel.app/api/v2/:personal-key'
+export const host = 'https://webdev-hw-api.vercel.app/api/v2/zuev-ivan/comments'
 
 export function getComments() {
   const fetchPromise = fetch( host , {
