@@ -2,7 +2,8 @@
 import { getComments, addNewElToList } from './api.js';
 
 // Рендеринг комментариев
-export function renderComments(commentsServer) {
+// нужно прописать вторым аргументом токен 
+export function renderComments(commentsServer, token) {
   const commentsHTML = commentsServer.map((comment, index) => {
     return `<li id="comment" class="comment" data-index="${index}">
       <div class="comment-header">
@@ -22,9 +23,32 @@ export function renderComments(commentsServer) {
       </div>
     </li>`;
   }).join("");
-
-  const commentsEl = document.getElementById("comments");
-  commentsEl.innerHTML = commentsHTML;
+  const appHTML = `<div class="container">
+      <ul id="comments" class="comments"> ${commentsHTML}
+      </ul>
+      ${token ? `      <div class="add-form">
+      <input
+        id="name-input"
+        type="text"
+        class="add-form-name"
+        placeholder="Введите ваше имя"
+      />
+      <textarea
+        id="text-input"
+        type="textarea"
+        class="add-form-text"
+        placeholder="Введите ваш комментарий"
+        rows="4"
+      ></textarea>
+      <div class="add-form-row">
+        <button  class="delete-button">Удалить последний комментарий</button>
+        <button id="add-button" class="add-form-button">Написать</button>
+      </div>
+    </div>` : "дописать ссылку!!!!!"}
+ 
+    </div>`
+  const appEl = document.getElementById("app");
+  appEl.innerHTML = appHTML;
 
   const usersLikes = document.querySelectorAll('.likes');
   const numberLikesEl = document.querySelectorAll('.likes-counter');
@@ -60,7 +84,7 @@ export function renderComments(commentsServer) {
   }
 }
 
-import { getComments, addNewElToList } from './api.js';
+
 
 export function removeLastElement(comments) {
   if (comments.length > 0) {

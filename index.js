@@ -1,4 +1,4 @@
-import { addNewElToList } from './api.js';
+import { getComments  } from './api.js';
 import { renderComments, addNewComment, removeLastElement, getDate } from './render.js';
 
 let comments;
@@ -25,3 +25,10 @@ addButtonElement.addEventListener('click', () => {
 deleteButtonElement.addEventListener('click', () => {
   removeLastElement(comments);
 });
+
+// 1. комментим всю разметку в html, только корневой див
+//2.отрисовыванием страницы комментариев 
+// 3. поввесить обработчик на ссылку 
+// 4. создаем новый модуль login и функцию в ней renderLogin
+// 5. создаем логику авторизации и делаем переход на страницу комментариев 
+// 6. 
