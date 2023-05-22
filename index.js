@@ -1,26 +1,31 @@
 import { getComments } from "./api.js";
-import { renderComments } from "./render.js";
+import { renderComments, removeLastElement, deleteButtonElement } from "./render.js";
 
 let comments = [];
 
 const user = {
-  name: "admin",
-  password: "admin",
-  token: "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k",
-  // token: null,
-  login: "admin",
+name: "admin",
+password: "admin",
+token: "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k",
+// token: null,
+login: "admin",
 };
 
 export const isAuthorized = user.token ? true : false;
 
-getComments(user.token).then(data => {
-  comments = data;
-  renderComments(user.token, comments.comments);
-}).catch(() => {
-  console.log('что-то не то')
-}); 
+getComments(user.token)
+.then(data => {
+comments = data;
+renderComments(user, comments.comments);
+})
+.catch(() => {
+// console.log('что-то не то')
+});
 
-
+// Удаление последнего комментария
+deleteButtonElement.addEventListener('click', () => {
+removeLastElement(user, comments);
+});
 // Вызов функции получения комментариев при загрузке страницы\
 
 

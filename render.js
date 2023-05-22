@@ -1,68 +1,49 @@
 import { isAuthorized } from "./index.js";
+import {addNewElToList, getComments, deleteComment} from "./api.js"
 
-// Рендеринг комментариев
-// нужно прописать вторым аргументом токен
-export function renderComments(token, comments) {
+
+export function renderComments(user, comments) {
   const appEl = document.querySelector(".app");
 
   let commentsHTML = '';
 
   comments.forEach(comment => {
     commentsHTML += `<li id="comment" class="comment" data-index="${comment.id}">
-    <div class="comment-header">
-      <div class="comment-name" data-name="${comment.author.name}">${comment.author.name}</div>
-      <div>${getDate(comment.date)}</div>
-    </div>
-    <div class="comment-body">
-      <div class="comment-text" data-text="${comment.text}">
-        ${comment.text}
+      <div class="comment-header">
+        <div class="comment-name" data-name="${comment.author.name}">${comment.author.name}</div>
+        <div>${getDate(comment.date)}</div>
       </div>
-    </div>
-    <div class="comment-footer">
-      <div class="likes" data-index="${comment.id}">
-        <span class="likes-counter" data-index="${comment.id}">${comment.likes}</span>
-        <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${comment.id}"></button>
+      <div class="comment-body">
+        <div class="comment-text" data-text="${comment.text}">${comment.text}</div>
       </div>
-    </div>
-  </li>`
-  })
+      <div class="comment-footer">
+        <div class="likes" data-index="${comment.id}">
+          <span class="likes-counter" data-index="${comment.id}">${comment.likes}</span>
+          <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${comment.id}"></button>
+        </div>
+      </div>
+    </li>`;
+  });
 
   appEl.innerHTML = `<div class="container">
-  <ul id="comments" class="comments"> ${commentsHTML}
-  </ul>
-  ${
-    isAuthorized
-      ? `      <div class="add-form">
-  <input
-    id="name-input"
-    type="text"
-    class="add-form-name"
-    placeholder="Введите ваше имя"
-  />
-  <textarea
-    id="text-input"
-    type="textarea"
-    class="add-form-text"
-    placeholder="Введите ваш комментарий"
-    rows="4"
-  ></textarea>
-  <div class="add-form-row">
-    <button  class="delete-button">Удалить последний комментарий</button>
-    <button id="add-button" class="add-form-button">Написать</button>
-  </div>
-</div>`
-      : '<a class="registrationLink" href="#">Вход или регистрация</a>'
-  }
-</div>`;
-
-
+    <ul id="comments" class="comments">${commentsHTML}</ul>
+    ${isAuthorized ? 
+      `<div class="add-form">
+         <input id="name-input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
+         <textarea id="text-input" type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"></textarea>
+         <div class="add-form-row">
+           <button id="delete-button" class="delete-button">Удалить последний комментарий</button>
+           <button id="add-button" class="add-form-button">Написать</button>
+         </div>
+       </div>` :
+      '<a class="registrationLink" href="#">Вход или регистрация</a>'}
+  </div>`;
 
   const usersLikes = document.querySelectorAll('.likes');
   const numberLikesEl = document.querySelectorAll('.likes-counter');
   const likesPainter = document.querySelectorAll('.like-button');
 
   // Обработчик лайков
-
   for (let userLike of usersLikes) {
     userLike.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -76,53 +57,50 @@ export function renderComments(token, comments) {
       }
       renderComments(commentsServer);
     });
-  };
+  }
 
-  // // Ответ на комментарий
-
+  // Ответ на комментарий
   const responseUsersComments = document.querySelectorAll('#comment');
   for (const responseUserComment of responseUsersComments) {
     responseUserComment.addEventListener('click', () => {
       const userName = commentsServer[responseUserComment.dataset.index].author.name;
       const userText = commentsServer[responseUserComment.dataset.index].text;
       const textInputElement = document.getElementById("text-input");
-      textInputElement.value = '>' + "  " + ' "' + `${userText}` + ' "' + ' ©' + '\n' + '(' + `${userName}` + ')' + '\n';
+      textInputElement.value = '>' + " " + ' "' + `${userText}` + ' "' + ' ©' + '\n' + '(' + `${userName}` + ')' + '\n';
     });
   }
 
   if (isAuthorized) {
     const addButtonElement = document.querySelector('#add-button');
-    const deleteButtonElement = document.querySelector('#delete-button');
-
-
-    // Добавление нового комментария
     addButtonElement.addEventListener('click', () => {
-      addNewComment(comments);
-    });
-
-    // // Удаление последнего комментария
-    deleteButtonElement.addEventListener('click', () => {
-      removeLastElement(comments);
+      addNewComment(user, comments);
     });
 
   } else {
     document.querySelector('.registrationLink').addEventListener('click', () => {
-        console.log('Регистрация или Вход');
-    })
-  
+      console.log('Регистрация или Вход');
+    });
   }
-
-
 }
 
-export function removeLastElement(comments) {
+export const deleteButtonElement = document.querySelector('#delete-button');
+
+// Удаление последнего комментария
+export function removeLastElement(user, comments) {
   if (comments.length > 0) {
-    comments.pop(); // удаляем последний элемент из массива comments
-    renderComments(comments); // перерисовываем список комментариев
+    const lastCommentId = comments[comments.length - 1].id;
+    deleteComment(user.token, lastCommentId)
+      .then(() => {
+        comments.pop(); // Удаляем последний элемент из массива comments
+        renderComments(user, comments); // Перерисовываем комментарии после удаления
+      })
+      .catch((error) => {
+        alert("Кажется что-то пошло не так, попробуйте позже");
+      });
   }
 }
 
-// // Определение даты
+// Определение даты
 function getDate(date) {
   const dateNow = new Date();
   const dateNumber = String(dateNow.getDate()).padStart(2, "0");
@@ -144,18 +122,8 @@ function getDate(date) {
   );
 }
 
-// // Вызов функции получения комментариев при загрузке страницы
-// getComments().then((comments) => {
-//   renderComments(comments);
-// }).catch((error) => {
-//   console.log('Ошибка при получении комментариев:', error);
-// });
-
 // Добавление нового комментария
-
-
-
-export function addNewComment(comment) {
+export function addNewComment(user, comments) {
   const buttonElement = document.getElementById("add-button");
   const nameInputElement = document.getElementById("name-input");
   const textInputElement = document.getElementById("text-input");
@@ -175,20 +143,20 @@ export function addNewComment(comment) {
   const name = nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   const text = textInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
-  addNewElToList(name, text)
-  .then(() => {
-    nameInputElement.value = "";
-    textInputElement.value = "";
-    nameInputElement.placeholder = "Введите ваше имя";
-    textInputElement.placeholder = "Введите ваш комментарий";
-    return getComments();
-  })
-  .then((updatedComments) => {
-    renderComments(updatedComments);
-  })
-  .catch((error) => {
-    buttonElement.disabled = false;
-    buttonElement.textContent = "Написать";
-    alert("Кажется что-то пошло не так, попробуйте позже");
-  });
+  addNewElToList(user, name, text)
+    .then(() => {
+      nameInputElement.value = "";
+      textInputElement.value = "";
+      nameInputElement.placeholder = "Введите ваше имя";
+      textInputElement.placeholder = "Введите ваш комментарий";
+      return getComments(user.token);
+    })
+    .then((updatedComments) => {
+      renderComments(user, updatedComments); // Передаем переменную user и обновленные комментарии
+    })
+    .catch((error) => {
+      buttonElement.disabled = false;
+      buttonElement.textContent = "Написать";
+      alert("Кажется что-то пошло не так, попробуйте позже");
+    });
 }
