@@ -84,12 +84,14 @@ export function renderComments(user, comments) {
 
   } else {
     document.querySelector('.registrationLink').addEventListener('click', () => {
-      document.querySelector('.registrationLink').addEventListener('click', () => {
-        renderAuthorizationForm();
+      renderAuthorizationForm({
+        setToken: (newToken) => {
+          token = newToken;
+        }
       });
     });
   }
-}
+};
 
 
 // Удаление последнего комментария

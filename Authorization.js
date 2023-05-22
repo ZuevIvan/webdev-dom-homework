@@ -1,4 +1,6 @@
-export function renderAuthorizationForm() {
+import {login} from "./api.js"
+
+export function renderAuthorizationForm( setToken ) {
     const appEl = document.querySelector('.app');
     appEl.innerHTML = `
     <div class="container">
@@ -16,11 +18,14 @@ export function renderAuthorizationForm() {
   
     const loginButton = document.querySelector('#login-button');
     loginButton.addEventListener('click', () => {
-      const usernameInput = document.querySelector('#username-input');
-      const passwordInput = document.querySelector('#password-input');
-      const username = usernameInput.value;
-      const password = passwordInput.value;
-      // Здесь вы можете вызвать функцию для выполнения авторизации на сервере
-      // и обновить состояние авторизации в соответствии с результатом
+
+        setToken("Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k");
+
+        login({
+            login: ' ',
+            password: ' ',
+        }).then ((user) =>{
+            console.log(user);
+        })
     });
   }

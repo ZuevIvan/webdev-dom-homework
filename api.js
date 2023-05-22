@@ -49,5 +49,15 @@ export function deleteComment(token, commentId) {
   });
 }
 
-// let token = 'Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k'
-// token = null
+export function login (login, password) {
+  const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/user/login', {
+    method: "POST",
+    body: JSON.stringify({
+      login,
+      password,
+    }),
+  })
+  .then((response) => {
+    return response.json()
+  });
+}
