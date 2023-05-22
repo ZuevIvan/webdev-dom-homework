@@ -1,30 +1,35 @@
-import {login} from "./api.js"
+import { login } from "./api.js";
+import { renderComments } from "./render.js";
 
-export function renderAuthorizationForm(setToken) {
-    const appEl = document.querySelector('.app');
-    appEl.innerHTML = `
-      <div class="container">
-        <div class="add-form-authorization">
-          <h2 class="registrationLink">Авторизация</h2>
-          <div class="btn-authorization-registration">
-            <input class="add-authorization placeholder" id="username-input" type="text" placeholder="Имя пользователя">
-            <input class="add-authorization placeholder" id="password-input" type="password" placeholder="Пароль">
-            <button class="btn-authorization" id="login-button">Войти</button>
-          </div>
+
+export function renderAuthorizationForm(user) {
+  const appEl = document.querySelector('.app');
+  appEl.innerHTML = `
+    <div class="container">
+      <div class="add-form-authorization">
+        <h2 class="registrationLink">Авторизация</h2>
+        <div class="btn-authorization-registration">
+          <input class="add-authorization placeholder" id="username-input" type="text" placeholder="Имя пользователя">
+          <input class="add-authorization placeholder" id="password-input" type="password" placeholder="Пароль">
+          <button class="btn-authorization" id="login-button">Войти</button>
         </div>
-        <button class="btn-registration" id="registration-button">Зарегистрироваться</button>
       </div>
-    `;
-  
-    const loginButton = document.querySelector('#login-button');
-    loginButton.addEventListener('click', () => {
-      setToken("Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k");
-  
-      login({
-        login: '',
-        password: '',
-      }).then((user) => {
-        console.log(user);
+      <button class="btn-registration" id="registration-button">Зарегистрироваться</button>
+    </div>
+  `;
+
+  const loginButton = document.querySelector('#login-button');
+  loginButton.addEventListener('click', () => {
+    const usernameInput = document.querySelector('#username-input');
+    const passwordInput = document.querySelector('#password-input');
+
+    login(usernameInput.value, passwordInput.value)
+      .then((response) => {
+        user.token = response.token;
+        renderComments(user, []); // Добавить вызов renderComments
+      })
+      .catch((error) => {
+        console.error(error);
       });
     });
   
@@ -49,10 +54,12 @@ export function renderAuthorizationForm(setToken) {
   
         const authorizationBtn = document.querySelector('#authorization-button');
         authorizationBtn.addEventListener('click', () => {
-          renderAuthorizationForm();
+          renderAuthorizationForm( { setToken } );
         });
       }
   
       renderRegistrationForm();
     })
+
+
 }

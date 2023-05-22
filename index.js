@@ -3,6 +3,7 @@ import { renderComments } from "./render.js";
 
 
 let comments = [];
+export let token;
 
 const user = {
   name: "admin",
@@ -11,6 +12,8 @@ const user = {
   token: null,
   login: "admin",
 };
+
+
 
 export const isAuthorized = user.token ? true : false;
 

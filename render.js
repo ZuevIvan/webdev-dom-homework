@@ -1,4 +1,4 @@
-import { isAuthorized } from "./index.js";
+import { isAuthorized, token } from "./index.js";
 import { addNewElToList, getComments, deleteComment } from "./api.js";
 import {renderAuthorizationForm} from "./Authorization.js";
 
@@ -49,14 +49,14 @@ export function renderComments(user, comments) {
     userLike.addEventListener('click', (event) => {
       event.stopPropagation();
       const indexUserLike = userLike.dataset.index;
-      if (commentsServer[indexUserLike].isLiked) {
-        commentsServer[indexUserLike].likes -= 1;
-        commentsServer[indexUserLike].isLiked = false;
+      if (comments[indexUserLike].isLiked) {
+        comments[indexUserLike].likes -= 1;
+        comments[indexUserLike].isLiked = false;
       } else {
-        commentsServer[indexUserLike].likes += 1;
-        commentsServer[indexUserLike].isLiked = true;
+        comments[indexUserLike].likes += 1;
+        comments[indexUserLike].isLiked = true;
       }
-      renderComments(commentsServer);
+      renderComments(comments);
     });
   }
 

@@ -49,8 +49,8 @@ export function deleteComment(token, commentId) {
   });
 }
 
-export function login (login, password) {
-  const fetchPromise = fetch('https://webdev-hw-api.vercel.app/api/user/login', {
+export function login(login, password) {
+  return fetch('https://webdev-hw-api.vercel.app/api/user/login', {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -58,6 +58,6 @@ export function login (login, password) {
     }),
   })
   .then((response) => {
-    return response.json()
+    return response.json();
   });
 }
