@@ -1,6 +1,6 @@
 body {
-    margin: 0;
-  }
+  margin: 0;
+}
 
   .container {
     font-family: Helvetica;
@@ -155,4 +155,9 @@ body {
     border: none;
     border-radius: 18px;
     cursor: pointer;
+  }
+
+  .registrationLink{
+    padding-top: 25px;
+    color: rgb(136, 240, 0);
   }

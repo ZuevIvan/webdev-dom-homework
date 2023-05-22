@@ -1,34 +1,34 @@
-export const host = 'https://webdev-hw-api.vercel.app/api/v2/zuev-ivan/comments'
+const host = 'https://webdev-hw-api.vercel.app/api/v2/ivan-zuev/comments'
 
-export function getComments() {
-  const fetchPromise = fetch( host , {
+// let token = 'Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k'
+// token = null
+
+
+export function getComments(token) {
+  return fetch( host , {
     method: "GET",
-  });
-
-  return fetchPromise.then((response) => {
-    const jsonPromise = response.json();
-    return jsonPromise.then((responseData) => {
-      return responseData.comments;
-    });
-  });
+    headers: {
+      Authorization: token
+    } 
+  }).then((response) => response.json());
 }
 
-export function addNewElToList(name, text) {
-  const fetchPromise = fetch(host, {
-    method: "POST",
-    body: JSON.stringify({
-      name,
-      text
-    }),
-  });
+// export function addNewElToList(name, text) {
+//   const fetchPromise = fetch(host, {
+//     method: "POST",
+//     body: JSON.stringify({
+//       name,
+//       text
+//     }),
+//   });
 
-  return fetchPromise.then((response) => {
-    if (response.status === 500) {
-      return Promise.reject("Сервер упал");
-    } else if (response.status === 400) {
-      return Promise.reject("Объект с ошибкой в формате");
-    } else {
-      return response.json();
-    }
-  });
-}
+//   return fetchPromise.then((response) => {
+//     if (response.status === 500) {
+//       return Promise.reject("Сервер упал");
+//     } else if (response.status === 400) {
+//       return Promise.reject("Объект с ошибкой в формате");
+//     } else {
+//       return response.json();
+//     }
+//   });
+// }
