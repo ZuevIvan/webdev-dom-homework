@@ -159,5 +159,69 @@ body {
 
   .registrationLink{
     padding-top: 25px;
-    color: rgb(136, 240, 0);
+    color: #bcec30
+  }
+
+  .add-authorization {
+    width: 200px;
+    padding-top: 15px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    filter: drop-shadow(0px 20px 67px rgba(0, 0, 0, 0.08));
+    border-radius: 20px;
+    text-align: center; /* Добавляем выравнивание текста по центру */
+  }
+  
+  .add-form-authorization {
+    width: 596px;
+    box-sizing: border-box;
+    background: radial-gradient(75.42% 75.42% at 50% 42.37%, rgba(53, 53, 53, 0) 22.92%, #7334ea 100%);
+    filter: drop-shadow(0px 20px 67px rgba(0, 0, 0, 0.08));
+    border-radius: 20px;
+    height: 290px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .placeholder::placeholder {
+    text-align: center; /* Выравнивание плейсхолдера по центру */
+  }
+
+  .btn-authorization-registration{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-authorization{
+    margin-top: 24px;
+    font-size: 24px;
+    padding: 10px 20px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+  }
+
+  .btn-registration{
+
+    background: #7334ea;
+
+    box-sizing: border-box;
+
+
+    color: #000000;
+
+    line-height: 22px;
+    text-align: center;
+    transition: all 0.5s;
+
+    margin-top: 24px;
+    font-size: 24px;
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
   }

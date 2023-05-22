@@ -1,6 +1,6 @@
 import { isAuthorized } from "./index.js";
-import {addNewElToList, getComments, deleteComment} from "./api.js"
-
+import { addNewElToList, getComments, deleteComment } from "./api.js";
+import {renderAuthorizationForm} from "./Authorization.js";
 
 export function renderComments(user, comments) {
   const appEl = document.querySelector(".app");
@@ -39,6 +39,7 @@ export function renderComments(user, comments) {
       '<a class="registrationLink" href="#">Вход или регистрация</a>'}
   </div>`;
 
+ const deleteButtonElement = document.querySelector('#delete-button');
   const usersLikes = document.querySelectorAll('.likes');
   const numberLikesEl = document.querySelectorAll('.likes-counter');
   const likesPainter = document.querySelectorAll('.like-button');
@@ -63,8 +64,8 @@ export function renderComments(user, comments) {
   const responseUsersComments = document.querySelectorAll('#comment');
   for (const responseUserComment of responseUsersComments) {
     responseUserComment.addEventListener('click', () => {
-      const userName = commentsServer[responseUserComment.dataset.index].author.name;
-      const userText = commentsServer[responseUserComment.dataset.index].text;
+      const userName = comments[responseUserComment.dataset.index].author.name;
+      const userText = comments[responseUserComment.dataset.index].text;
       const textInputElement = document.getElementById("text-input");
       textInputElement.value = '>' + " " + ' "' + `${userText}` + ' "' + ' ©' + '\n' + '(' + `${userName}` + ')' + '\n';
     });
@@ -76,14 +77,20 @@ export function renderComments(user, comments) {
       addNewComment(user, comments);
     });
 
+    // Удаление последнего комментария
+    deleteButtonElement.addEventListener("click", () => {
+      removeLastElement(user, comments);
+    });
+
   } else {
     document.querySelector('.registrationLink').addEventListener('click', () => {
-      console.log('Регистрация или Вход');
+      document.querySelector('.registrationLink').addEventListener('click', () => {
+        renderAuthorizationForm();
+      });
     });
   }
 }
 
-export const deleteButtonElement = document.querySelector('#delete-button');
 
 // Удаление последнего комментария
 export function removeLastElement(user, comments) {
@@ -99,6 +106,7 @@ export function removeLastElement(user, comments) {
       });
   }
 }
+
 
 // Определение даты
 function getDate(date) {
@@ -152,11 +160,11 @@ export function addNewComment(user, comments) {
       return getComments(user.token);
     })
     .then((updatedComments) => {
-      renderComments(user, updatedComments); // Передаем переменную user и обновленные комментарии
+      renderComments(user, updatedComments.comments); // Передаем переменную user и обновленные комментарии
     })
     .catch((error) => {
       buttonElement.disabled = false;
       buttonElement.textContent = "Написать";
-      alert("Кажется что-то пошло не так, попробуйте позже");
+      console.error(error);
     });
 }
