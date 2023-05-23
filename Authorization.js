@@ -26,7 +26,7 @@ export function renderAuthorizationForm(user) {
     login(usernameInput.value, passwordInput.value)
       .then((response) => {
         user.token = response.token;
-        renderComments(user, []); // Добавить вызов renderComments
+        renderComments(user, [], true); // Добавить вызов renderComments
       })
       .catch((error) => {
         console.error(error);

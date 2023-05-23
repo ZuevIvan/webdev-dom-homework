@@ -20,12 +20,11 @@ export const isAuthorized = user.token ? true : false;
 getComments(user.token)
   .then((data) => {
     comments = data;
-    renderComments(user, comments.comments);
+    renderComments(user, comments.comments, true); // Передача значения true для isAuthorized
   })
   .catch(() => {
-    // console.log('что-то не то')
+    // Обработка ошибки
   });
-
 
 // Вызов функции получения комментариев при загрузке страницы\
 
