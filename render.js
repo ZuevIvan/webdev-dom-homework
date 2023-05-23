@@ -2,12 +2,11 @@ import { isAuthorized, token } from "./index.js";
 import { addNewElToList, getComments, deleteComment } from "./api.js";
 import {renderAuthorizationForm} from "./Authorization.js";
 
-export function renderComments(user, comments, isAuthorized) {
+export function renderComments(user, comments) {
   const appEl = document.querySelector(".app");
 
   let commentsHTML = '';
 
-  // Отрисовка комментариев
   comments.forEach(comment => {
     commentsHTML += `<li id="comment" class="comment" data-index="${comment.id}">
       <div class="comment-header">
@@ -26,20 +25,19 @@ export function renderComments(user, comments, isAuthorized) {
     </li>`;
   });
 
-  appEl.innerHTML = `
-    <div class="container">
-      <ul id="comments" class="comments">${commentsHTML}</ul>
-      ${isAuthorized ? 
-        `<div class="add-form">
-           <input id="name-input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
-           <textarea id="text-input" type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"></textarea>
-           <div class="add-form-row">
-             <button id="delete-button" class="delete-button">Удалить последний комментарий</button>
-             <button id="add-button" class="add-form-button">Написать</button>
-           </div>
-         </div>` :
-        '<a class="registrationLink" href="#">Вход или регистрация</a>'}
-    </div>`;
+  appEl.innerHTML = `<div class="container">
+    <ul id="comments" class="comments">${commentsHTML}</ul>
+    ${isAuthorized ? 
+      `<div class="add-form">
+         <input id="name-input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
+         <textarea id="text-input" type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"></textarea>
+         <div class="add-form-row">
+           <button id="delete-button" class="delete-button">Удалить последний комментарий</button>
+           <button id="add-button" class="add-form-button">Написать</button>
+         </div>
+       </div>` :
+      '<a class="registrationLink" href="#">Вход или регистрация</a>'}
+  </div>`;
 
  const deleteButtonElement = document.querySelector('#delete-button');
   const usersLikes = document.querySelectorAll('.likes');
@@ -111,7 +109,7 @@ export function removeLastElement(user, comments) {
   }
 }
 
-
+ 
 // Определение даты
 function getDate(date) {
   const dateNow = new Date();

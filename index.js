@@ -17,14 +17,15 @@ const user = {
 
 export const isAuthorized = user.token ? true : false;
 
-getComments(user.token)
+getComments()
   .then((data) => {
     comments = data;
-    renderComments(user, comments.comments, true); // Передача значения true для isAuthorized
+    renderComments(user, comments.comments, true);
   })
   .catch(() => {
-    // Обработка ошибки
+    // console.log('что-то не то')
   });
+
 
 // Вызов функции получения комментариев при загрузке страницы\
 

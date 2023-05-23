@@ -4,12 +4,12 @@ export function getComments(token) {
   return fetch(host, {
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: token ? 'Bearer '+ token: undefined, 
     },
   }).then((response) => response.json());
 }
 
-export function addNewElToList(user, name, text) {
+export function addNewElToList(token, name, text) {
   const fetchPromise = fetch(host, {
     method: "POST",
     body: JSON.stringify({
@@ -17,7 +17,7 @@ export function addNewElToList(user, name, text) {
       text,
     }),
     headers: {
-      Authorization: user.token,
+      Authorization: token ? 'Bearer '+ token: undefined, 
     },
   });
 
@@ -38,7 +38,7 @@ export function deleteComment(token, commentId) {
   return fetch(`${host}/${commentId}`, {
     method: "DELETE",
     headers: {
-      Authorization: token,
+      Authorization: 'Bearer '+ token,
     },
   }).then((response) => {
     if (response.ok) {

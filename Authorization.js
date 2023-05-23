@@ -1,4 +1,4 @@
-import { login } from "./api.js";
+import { login, getComments } from "./api.js";
 import { renderComments } from "./render.js";
 
 
@@ -26,7 +26,15 @@ export function renderAuthorizationForm(user) {
     login(usernameInput.value, passwordInput.value)
       .then((response) => {
         user.token = response.token;
-        renderComments(user, [], true); // Добавить вызов renderComments
+        getComments(response.token)
+            .then((data) => {
+                comments = data;
+                renderComments(user, comments.comments, true);
+              })
+              .catch(() => {
+                // console.log('что-то не то')
+              });
+        // renderComments(user, [], true); // Добавить вызов renderComments
       })
       .catch((error) => {
         console.error(error);
