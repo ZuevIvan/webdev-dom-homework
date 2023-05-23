@@ -38,7 +38,7 @@ export function deleteComment(token, commentId) {
   return fetch(`${host}/${commentId}`, {
     method: "DELETE",
     headers: {
-      Authorization: 'Bearer '+ token,
+      Authorization: token ? 'Bearer '+ token: undefined, 
     },
   }).then((response) => {
     if (response.ok) {

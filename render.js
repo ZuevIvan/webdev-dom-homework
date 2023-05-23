@@ -1,25 +1,34 @@
-import { isAuthorized, token } from "./index.js";
 import { addNewElToList, getComments, deleteComment } from "./api.js";
-import {renderAuthorizationForm} from "./Authorization.js";
+import { renderAuthorizationForm } from "./Authorization.js";
 
-export function renderComments(user, comments) {
+export function renderComments(token, comments) {
   const appEl = document.querySelector(".app");
 
-  let commentsHTML = '';
+  let commentsHTML = "";
 
-  comments.forEach(comment => {
-    commentsHTML += `<li id="comment" class="comment" data-index="${comment.id}">
+  comments.forEach((comment) => {
+    commentsHTML += `<li id="comment" class="comment" data-index="${
+      comment.id
+    }">
       <div class="comment-header">
-        <div class="comment-name" data-name="${comment.author.name}">${comment.author.name}</div>
+        <div class="comment-name" data-name="${comment.author.name}">${
+      comment.author.name
+    }</div>
         <div>${getDate(comment.date)}</div>
       </div>
       <div class="comment-body">
-        <div class="comment-text" data-text="${comment.text}">${comment.text}</div>
+        <div class="comment-text" data-text="${comment.text}">${
+      comment.text
+    }</div>
       </div>
       <div class="comment-footer">
         <div class="likes" data-index="${comment.id}">
-          <span class="likes-counter" data-index="${comment.id}">${comment.likes}</span>
-          <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${comment.id}"></button>
+          <span class="likes-counter" data-index="${comment.id}">${
+      comment.likes
+    }</span>
+          <button class="like-button ${
+            comment.isLiked ? "-active-like" : ""
+          }" data-index="${comment.id}"></button>
         </div>
       </div>
     </li>`;
@@ -27,26 +36,28 @@ export function renderComments(user, comments) {
 
   appEl.innerHTML = `<div class="container">
     <ul id="comments" class="comments">${commentsHTML}</ul>
-    ${isAuthorized ? 
-      `<div class="add-form">
+    ${
+      token
+        ? `<div class="add-form">
          <input id="name-input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
          <textarea id="text-input" type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"></textarea>
          <div class="add-form-row">
            <button id="delete-button" class="delete-button">Удалить последний комментарий</button>
            <button id="add-button" class="add-form-button">Написать</button>
          </div>
-       </div>` :
-      '<a class="registrationLink" href="#">Вход или регистрация</a>'}
+       </div>`
+        : '<a class="registrationLink" href="#">Вход или регистрация</a>'
+    }
   </div>`;
 
- const deleteButtonElement = document.querySelector('#delete-button');
-  const usersLikes = document.querySelectorAll('.likes');
-  const numberLikesEl = document.querySelectorAll('.likes-counter');
-  const likesPainter = document.querySelectorAll('.like-button');
+  const deleteButtonElement = document.querySelector("#delete-button");
+  const usersLikes = document.querySelectorAll(".likes");
+  const numberLikesEl = document.querySelectorAll(".likes-counter");
+  const likesPainter = document.querySelectorAll(".like-button");
 
   // Обработчик лайков
   for (let userLike of usersLikes) {
-    userLike.addEventListener('click', (event) => {
+    userLike.addEventListener("click", (event) => {
       event.stopPropagation();
       const indexUserLike = userLike.dataset.index;
       if (comments[indexUserLike].isLiked) {
@@ -56,43 +67,50 @@ export function renderComments(user, comments) {
         comments[indexUserLike].likes += 1;
         comments[indexUserLike].isLiked = true;
       }
-      renderComments(comments);
+      renderComments(token, comments);
     });
   }
 
   // Ответ на комментарий
-  const responseUsersComments = document.querySelectorAll('#comment');
+  const responseUsersComments = document.querySelectorAll("#comment");
   for (const responseUserComment of responseUsersComments) {
-    responseUserComment.addEventListener('click', () => {
+    responseUserComment.addEventListener("click", () => {
       const userName = comments[responseUserComment.dataset.index].author.name;
       const userText = comments[responseUserComment.dataset.index].text;
       const textInputElement = document.getElementById("text-input");
-      textInputElement.value = '>' + " " + ' "' + `${userText}` + ' "' + ' ©' + '\n' + '(' + `${userName}` + ')' + '\n';
+      textInputElement.value =
+        ">" +
+        " " +
+        ' "' +
+        `${userText}` +
+        ' "' +
+        " ©" +
+        "\n" +
+        "(" +
+        `${userName}` +
+        ")" +
+        "\n";
     });
   }
 
-  if (isAuthorized) {
-    const addButtonElement = document.querySelector('#add-button');
-    addButtonElement.addEventListener('click', () => {
-      addNewComment(user, comments);
+  if (token) {
+    const addButtonElement = document.querySelector("#add-button");
+    addButtonElement.addEventListener("click", () => {
+      addNewComment(token, comments);
     });
 
     // Удаление последнего комментария
     deleteButtonElement.addEventListener("click", () => {
-      removeLastElement(user, comments);
+      removeLastElement(token, comments);
     });
-
   } else {
-    document.querySelector('.registrationLink').addEventListener('click', () => {
-      renderAuthorizationForm({
-        setToken: (newToken) => {
-          token = newToken;
-        }
+    document
+      .querySelector(".registrationLink")
+      .addEventListener("click", () => {
+        renderAuthorizationForm(token);
       });
-    });
   }
-};
-
+}
 
 // Удаление последнего комментария
 export function removeLastElement(user, comments) {
@@ -101,7 +119,7 @@ export function removeLastElement(user, comments) {
     deleteComment(user.token, lastCommentId)
       .then(() => {
         comments.pop(); // Удаляем последний элемент из массива comments
-        renderComments(user, comments); // Перерисовываем комментарии после удаления
+        renderComments(user.token, comments); // Перерисовываем комментарии после удаления
       })
       .catch((error) => {
         alert("Кажется что-то пошло не так, попробуйте позже");
@@ -109,7 +127,6 @@ export function removeLastElement(user, comments) {
   }
 }
 
- 
 // Определение даты
 function getDate(date) {
   const dateNow = new Date();
@@ -133,7 +150,7 @@ function getDate(date) {
 }
 
 // Добавление нового комментария
-export function addNewComment(user, comments) {
+export function addNewComment(user) {
   const buttonElement = document.getElementById("add-button");
   const nameInputElement = document.getElementById("name-input");
   const textInputElement = document.getElementById("text-input");
@@ -150,8 +167,12 @@ export function addNewComment(user, comments) {
     return;
   }
 
-  const name = nameInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-  const text = textInputElement.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  const name = nameInputElement.value
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+  const text = textInputElement.value
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 
   addNewElToList(user, name, text)
     .then(() => {

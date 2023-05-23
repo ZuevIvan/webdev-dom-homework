@@ -1,9 +1,8 @@
 import { login, getComments } from "./api.js";
 import { renderComments } from "./render.js";
 
-
-export function renderAuthorizationForm(user) {
-  const appEl = document.querySelector('.app');
+export function renderAuthorizationForm() {
+  const appEl = document.querySelector(".app");
   appEl.innerHTML = `
     <div class="container">
       <div class="add-form-authorization">
@@ -18,34 +17,27 @@ export function renderAuthorizationForm(user) {
     </div>
   `;
 
-  const loginButton = document.querySelector('#login-button');
-  loginButton.addEventListener('click', () => {
-    const usernameInput = document.querySelector('#username-input');
-    const passwordInput = document.querySelector('#password-input');
+  const loginButton = document.querySelector("#login-button");
+  loginButton.addEventListener("click", () => {
+    const usernameInput = document.querySelector("#username-input");
+    const passwordInput = document.querySelector("#password-input");
 
     login(usernameInput.value, passwordInput.value)
       .then((response) => {
-        user.token = response.token;
-        getComments(response.token)
-            .then((data) => {
-                comments = data;
-                renderComments(user, comments.comments, true);
-              })
-              .catch(() => {
-                // console.log('что-то не то')
-              });
-        // renderComments(user, [], true); // Добавить вызов renderComments
+        return getComments(response.user.token).then((data) => {
+          renderComments(response.user.token, data.comments);
+        });
       })
       .catch((error) => {
         console.error(error);
       });
-    });
-  
-    const registrationButton = document.querySelector('#registration-button');
-    registrationButton.addEventListener('click', () => {
-      function renderRegistrationForm() {
-        const appEl = document.querySelector('.app');
-        appEl.innerHTML = `
+  });
+
+  const registrationButton = document.querySelector("#registration-button");
+  registrationButton.addEventListener("click", () => {
+    function renderRegistrationForm() {
+      const appEl = document.querySelector(".app");
+      appEl.innerHTML = `
           <div class="container">
             <div class="add-form-registration">
               <h2 class="registrationLink">Регистрация</h2>
@@ -59,15 +51,13 @@ export function renderAuthorizationForm(user) {
             <button class="btn-registration" id="authorization-button">У меня уже есть аккаунт</button>
           </div>
         `;
-  
-        const authorizationBtn = document.querySelector('#authorization-button');
-        authorizationBtn.addEventListener('click', () => {
-          renderAuthorizationForm( { setToken } );
-        });
-      }
-  
-      renderRegistrationForm();
-    })
 
+      const authorizationBtn = document.querySelector("#authorization-button");
+      authorizationBtn.addEventListener("click", () => {
+        renderAuthorizationForm({ setToken });
+      });
+    }
 
+    renderRegistrationForm();
+  });
 }

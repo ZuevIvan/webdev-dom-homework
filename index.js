@@ -1,6 +1,5 @@
-import { getComments,  } from "./api.js";
+import { getComments } from "./api.js";
 import { renderComments } from "./render.js";
-
 
 let comments = [];
 export let token;
@@ -13,14 +12,10 @@ const user = {
   login: "admin",
 };
 
-
-
-export const isAuthorized = user.token ? true : false;
-
 getComments()
   .then((data) => {
     comments = data;
-    renderComments(user, comments.comments, true);
+    renderComments(user.token, comments.comments, true);
   })
   .catch(() => {
     // console.log('что-то не то')
