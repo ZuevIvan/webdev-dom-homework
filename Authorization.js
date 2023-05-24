@@ -43,8 +43,8 @@ export function renderAuthorizationForm() {
               <h2 class="registrationLink">Регистрация</h2>
               <div class="btn-authorization-registration">
                 <input class="add-authorization placeholder" id="username-input" type="text" placeholder="Имя пользователя">
+                <input class="add-authorization placeholder" id="login-input" type="text" placeholder="Логин">
                 <input class="add-authorization placeholder" id="password-input" type="password" placeholder="Пароль">
-                <input class="add-authorization placeholder" id="password-input" type="password" placeholder="Повторите пароль">
                 <button class="btn-authorization" id="registration-submit-button">Зарегистрироваться</button>
               </div>
             </div>
@@ -54,7 +54,7 @@ export function renderAuthorizationForm() {
 
       const authorizationBtn = document.querySelector("#authorization-button");
       authorizationBtn.addEventListener("click", () => {
-        renderAuthorizationForm({ setToken });
+        renderAuthorizationForm();
       });
     }
 

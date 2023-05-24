@@ -60,6 +60,7 @@ export function renderComments(token, comments) {
     userLike.addEventListener("click", (event) => {
       event.stopPropagation();
       const indexUserLike = userLike.dataset.index;
+      if (comments[indexUserLike]) {
       if (comments[indexUserLike].isLiked) {
         comments[indexUserLike].likes -= 1;
         comments[indexUserLike].isLiked = false;
@@ -68,6 +69,7 @@ export function renderComments(token, comments) {
         comments[indexUserLike].isLiked = true;
       }
       renderComments(token, comments);
+    }
     });
   }
 
