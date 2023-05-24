@@ -58,6 +58,26 @@ export function login(login, password) {
     }),
   })
   .then((response) => {
+    if (response.status === 400 ){
+      throw new error ("Неверный логин или пароль")
+    }
+    return response.json();
+  });
+}
+
+export function registration(login, password, name) {
+  return fetch('https://webdev-hw-api.vercel.app/api/user', {
+    method: "POST",
+    body: JSON.stringify({
+      login,
+      password,
+      name,
+    }),
+  })
+  .then((response) => {
+    if (response.status === 400 ){
+      throw new error ("Такой пользователь уже существует")
+    }
     return response.json();
   });
 }
