@@ -42,7 +42,6 @@ export function renderComments(token, comments) {
          <input id="name-input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
          <textarea id="text-input" type="textarea" class="add-form-text" placeholder="Введите ваш комментарий" rows="4"></textarea>
          <div class="add-form-row">
-           <button id="delete-button" class="delete-button">Удалить последний комментарий</button>
            <button id="add-button" class="add-form-button">Написать</button>
          </div>
        </div>`
@@ -102,9 +101,9 @@ export function renderComments(token, comments) {
     });
 
     // Удаление последнего комментария
-    deleteButtonElement.addEventListener("click", () => {
-      removeLastElement(token, comments);
-    });
+    // deleteButtonElement.addEventListener("click", () => {
+    //   removeLastElement(token, comments);
+    // });
   } else {
     document
       .querySelector(".registrationLink")
@@ -115,19 +114,19 @@ export function renderComments(token, comments) {
 }
 
 // Удаление последнего комментария
-export function removeLastElement(user, comments) {
-  if (comments.length > 0) {
-    const lastCommentId = comments[comments.length - 1].id;
-    deleteComment(user.token, lastCommentId)
-      .then(() => {
-        comments.pop(); // Удаляем последний элемент из массива comments
-        renderComments(user.token, comments); // Перерисовываем комментарии после удаления
-      })
-      .catch((error) => {
-        alert("Кажется что-то пошло не так, попробуйте позже");
-      });
-  }
-}
+// export function removeLastElement(user, comments) {
+//   if (comments.length > 0) {
+//     const lastCommentId = comments[comments.length - 1].id;
+//     deleteComment(user.token, lastCommentId)
+//       .then(() => {
+//         comments.pop(); // Удаляем последний элемент из массива comments
+//         renderComments(user.token, comments); // Перерисовываем комментарии после удаления
+//       })
+//       .catch((error) => {
+//         alert("Кажется что-то пошло не так, попробуйте позже");
+//       });
+//   }
+// }
 
 // Определение даты
 function getDate(date) {

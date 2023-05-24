@@ -76,7 +76,7 @@ export function registration(login, password, name) {
   })
   .then((response) => {
     if (response.status === 400 ){
-      throw new error ("Такой пользователь уже существует")
+      throw new Error ("Такой пользователь уже существует")
     }
     return response.json();
   });
