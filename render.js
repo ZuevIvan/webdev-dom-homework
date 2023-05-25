@@ -71,13 +71,16 @@ export function renderComments(token, comments) {
     }
     });
   }
+// Ответ на комментарий
+const responseUsersComments = document.querySelectorAll("#comment");
+for (const responseUserComment of responseUsersComments) {
+  responseUserComment.addEventListener("click", () => {
+    const commentId = responseUserComment.dataset.index;
 
-  // Ответ на комментарий
-  const responseUsersComments = document.querySelectorAll("#comment");
-  for (const responseUserComment of responseUsersComments) {
-    responseUserComment.addEventListener("click", () => {
-      const userName = comments[responseUserComment.dataset.index].author.name;
-      const userText = comments[responseUserComment.dataset.index].text;
+    const comment = comments.find((item) => item.id === commentId);
+    if (comment) {
+      const userName = comment.author.name;
+      const userText = comment.text;
       const textInputElement = document.getElementById("text-input");
       textInputElement.value =
         ">" +
@@ -91,8 +94,11 @@ export function renderComments(token, comments) {
         `${userName}` +
         ")" +
         "\n";
-    });
-  }
+    } else {
+      console.log(`Комментарий с id ${commentId} не найден.`);
+    }
+  });
+}
 
   if (token) {
     const addButtonElement = document.querySelector("#add-button");
