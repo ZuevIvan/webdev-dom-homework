@@ -1,6 +1,7 @@
 import { addNewElToList, getComments, deleteComment } from "./api.js";
 import { renderAuthorizationForm } from "./Authorization.js";
-import { formatDateToRu, formatDateToUs } from './lib/formatDate';
+import { formatDateToRu, formatDateToUs } from './lib/formatDate/formatDate.js';
+import { format } from "date-fns";
 
 export function renderComments(token, comments) {
   const appEl = document.querySelector(".app");
