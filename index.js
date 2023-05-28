@@ -18,7 +18,7 @@ getComments()
     renderComments(user.token, comments.comments, true);
   })
   .catch(() => {
-    // console.log('что-то не то')
+    console.error(error)
   });
 
 

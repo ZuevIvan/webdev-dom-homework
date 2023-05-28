@@ -1,7 +1,8 @@
 import { addNewElToList, getComments, deleteComment } from "./api.js";
 import { renderAuthorizationForm } from "./Authorization.js";
-import { formatDateToRu, formatDateToUs } from './lib/formatDate/formatDate.js';
+// import { formatDateToRu, formatDateToUs } from './lib/formatDate/formatDate.js';
 import { format } from "date-fns";
+
 
 export function renderComments(token, comments) {
   const appEl = document.querySelector(".app");
@@ -16,7 +17,7 @@ export function renderComments(token, comments) {
         <div class="comment-name" data-name="${comment.author.name}">${
       comment.author.name
     }</div>
-        <div>${getDate(comment.date)}</div>
+        <div>${formatDate(comment.date)}</div>
       </div>
       <div class="comment-body">
         <div class="comment-text" data-text="${comment.text}">${
@@ -137,17 +138,9 @@ for (const responseUserComment of responseUsersComments) {
 // }
 
 // Определение даты
-const country = 'ru';
-const date = new Date();
-
-let formattedDate;
-if (country === 'ru') {
-  formattedDate = formatDateToRu(date);
-} else if (country === 'us') {
-  formattedDate = formatDateToUs(date);
+function formatDate(date) {
+  return format(new Date(date), "dd.MM.yyyy hh:mm:ss");
 }
-
-console.log(formattedDate);
 
 // Добавление нового комментария
 export function addNewComment(user) {
