@@ -1,28 +1,33 @@
-import { getComments, addNewElToList } from './api.js';
-import { renderComments, addNewComment, removeLastElement } from './render.js';
+import { getComments } from "./api.js";
+import { renderComments } from "./render.js";
 
-let comments;
+let comments = [];
+export let token;
 
-// Вызов функции получения комментариев при загрузке страницы
+const user = {
+  name: "admin",
+  password: "admin",
+  // token: "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k",
+  token: null,
+  login: "admin",
+};
+
 getComments()
-  .then((commentsData) => {
-    comments = commentsData;
-    renderComments(comments);
+  .then((data) => {
+    comments = data;
+    renderComments(user.token, comments.comments, true);
   })
-  .catch((error) => {
-    console.log('Ошибка при получении комментариев:', error);
+  .catch(() => {
+    // console.log('что-то не то')
   });
 
-const addButtonElement = document.getElementById('add-button');
-const deleteButtonElement = document.querySelector('.delete-button');
 
-// Добавление нового комментария
-addButtonElement.addEventListener('click', () => {
-  addNewComment(comments);
-});
+// Вызов функции получения комментариев при загрузке страницы\
 
-// Удаление последнего комментария
-deleteButtonElement.addEventListener('click', () => {
-  removeLastElement(comments);
-});
-    
+
+// 1. комментим всю разметку в html, только корневой див
+// 2. отрисовыванием страницы комментариев
+// 3. поввесить обработчик на ссылку
+// 4. создаем новый модуль login и функцию в ней renderLogin
+// 5. создаем логику авторизации и делаем переход на страницу комментариев
+// 6.
