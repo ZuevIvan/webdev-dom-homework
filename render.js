@@ -1,5 +1,8 @@
 import { addNewElToList, getComments, deleteComment } from "./api.js";
 import { renderAuthorizationForm } from "./Authorization.js";
+// import { formatDateToRu, formatDateToUs } from './lib/formatDate/formatDate.js';
+import { format } from "date-fns";
+
 
 export function renderComments(token, comments) {
   const appEl = document.querySelector(".app");
@@ -14,7 +17,7 @@ export function renderComments(token, comments) {
         <div class="comment-name" data-name="${comment.author.name}">${
       comment.author.name
     }</div>
-        <div>${getDate(comment.date)}</div>
+        <div>${formatDate(comment.date)}</div>
       </div>
       <div class="comment-body">
         <div class="comment-text" data-text="${comment.text}">${
@@ -135,25 +138,8 @@ for (const responseUserComment of responseUsersComments) {
 // }
 
 // Определение даты
-function getDate(date) {
-  const dateNow = new Date();
-  const dateNumber = String(dateNow.getDate()).padStart(2, "0");
-  const dateMonth = String(dateNow.getMonth() + 1).padStart(2, "0");
-  const dateYear = dateNow.getFullYear();
-  const dateHours = String(dateNow.getHours()).padStart(2, "0");
-  const dateMinutes = String(dateNow.getMinutes()).padStart(2, "0");
-
-  return (
-    dateNumber +
-    "." +
-    dateMonth +
-    "." +
-    dateYear +
-    " " +
-    dateHours +
-    ":" +
-    dateMinutes
-  );
+function formatDate(date) {
+  return format(new Date(date), "dd.MM.yyyy hh:mm:ss");
 }
 
 // Добавление нового комментария
